@@ -1,0 +1,9 @@
+is_internal                = false
+enable_deletion_protection = true
+subnet_type                = "public"
+environment                = "prod"
+organization               = "docsy"
+service                    = "ecs-alb-public"
+vpc_id                     = "vpc-058b94d33ca49cea9"
+lb_log_bucket              = "prod-docsy-cloudwatch-logs-s3-01"
+certificate_arn = "arn:aws:acm:ap-south-1:270443930724:certificate/7ab264bf-8857-4f89-b1d3-d7c9292bff05"

@@ -1,0 +1,9 @@
+environment         = "stg"
+organization        = "docsy"
+service             = "vpc"
+usage               = "application-network"
+azs                 = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"]
+vpc_cidr            = "10.200.0.0/16"
+pub_subnet_new_bits = 6
+db_subnet_new_bits  = 5
+app_subnet_new_bits = 5

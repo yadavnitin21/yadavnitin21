@@ -1,0 +1,9 @@
+is_internal                = false
+enable_deletion_protection = true
+subnet_type                = "public"
+environment                = "prod"
+organization               = "whealth"
+service                    = "ecs-alb-public"
+vpc_id                     = "vpc-0cb57450bc597e42c"
+lb_log_bucket              = "prod-whealth-cloudwatch-logs-s3-01"
+certificate_arn = "arn:aws:acm:ap-south-1:993356881255:certificate/7a386aa0-a6a1-4973-94d4-37e8b9349a9c"

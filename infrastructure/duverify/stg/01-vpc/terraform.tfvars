@@ -1,0 +1,9 @@
+environment         = "stg"
+organization        = "duverify"
+service             = "vpc"
+usage               = "application-network"
+azs                 = ["ap-south-1a", "ap-south-1b", "ap-south-1c"]
+vpc_cidr            = "10.101.0.0/16"
+pub_subnet_new_bits = 6
+db_subnet_new_bits  = 5
+app_subnet_new_bits = 5

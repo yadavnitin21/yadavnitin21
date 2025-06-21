@@ -1,0 +1,9 @@
+variable "environment" {}
+variable "organization" {}
+variable "service" {}
+variable "usage" {}
+variable "azs" {}
+variable "vpc_cidr" {}
+variable "pub_subnet_new_bits" {}
+variable "db_subnet_new_bits" {}
+variable "app_subnet_new_bits" {}

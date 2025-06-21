@@ -1,0 +1,78 @@
+on:
+  # push:
+  #   paths:
+  #     - 'infrastructure/**'
+  pull_request:
+    paths:
+      - "infrastructure/**"
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.4.6"
+
+      - name: Configure AWS Profiles
+        run: |
+          ############# SETUP CONFIG FILE #############
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/config
+          echo "region = ap-south-1" >> ~/.aws/config
+          echo "output = json" >> ~/.aws/config
+
+          ########### SETUP CREDENTIALS ###############
+          ######### BABYMD
+          echo "[babymd-prod]" > ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.BABYMD_AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.BABYMD_AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+
+          ######### DOCSY
+          echo "[docsy-prod]" >> ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.DOCSY_AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.DOCSY_AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+
+          ######### ELEVATENOW
+          echo "[elevatenow-prod]" >> ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.ELEVATENOW_AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.ELEVATENOW_AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+
+          ######### NIVAANCARE
+          echo "[nivaancare-prod]" >> ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.NIVAANCARE_AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.NIVAANCARE_AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+
+          ######### DUVERIFY
+          echo "[duverify-prod]" >> ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.DUVERIFY_AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.DUVERIFY_AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+
+      - name: Determine Changed Directories
+        id: get-changed-directories
+        run: |
+          CHANGED_DIRS=$(git diff --name-only origin/main...HEAD |xargs -L1 dirname| grep 'infrastructure/' | uniq | tr '\n' ' ')
+          # CHANGED_DIRS=$(git diff --name-only main ${{ github.sha }} | grep 'infrastructure/' | awk -F/ '{OFS="/"; $NF=""; print $0}'  | uniq)
+          echo "Changed directories: $CHANGED_DIRS"
+          echo "DIRS=$CHANGED_DIRS" >> $GITHUB_ENV
+
+      - name: Terraform Plan for Changed Directories
+        run: |
+          for dir in $DIRS
+          do
+            if [[ -d "$dir" ]]; then
+              echo "::group:: >>>>>> terraform for $dir"
+              cd $dir
+              terraform init
+              terraform plan -compact-warnings
+              cd -
+              echo "::endgroup::"
+              echo "----------------------------------------------------------------"
+            fi
+          done

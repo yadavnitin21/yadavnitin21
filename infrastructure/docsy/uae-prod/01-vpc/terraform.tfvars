@@ -1,0 +1,9 @@
+environment         = "prod"
+organization        = "docsy"
+service             = "vpc"
+usage               = "application-network"
+azs                 = ["me-central-1a", "me-central-1b", "me-central-1c"]
+vpc_cidr            = "10.21.0.0/16"
+pub_subnet_new_bits = 6
+db_subnet_new_bits  = 5
+app_subnet_new_bits = 5

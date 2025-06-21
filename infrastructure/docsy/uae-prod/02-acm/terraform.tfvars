@@ -1,0 +1,5 @@
+environment  = "prod"
+organization = "docsy"
+service      = "acm"
+domain_name = "*.mydocsy.com"
+validation_method = "DNS"
