@@ -1,22 +1,9 @@
-# Terraform
-This terraform will be used to provision resources in aws.
-
-Terraform version : v1.4.6
-
-Naming convention for AWS Resources.
-
-```<environment>-<organization>-<service-name>-<resource-name>-<number>```
-
-Eg. ```dev-elevatenow-vpn-ec2-01```
-
-The naming convention will change according to specific requirement and appropriate to resource.
+# Ansible
 
 
-Mandatory tags
-1. Name
-2. Service
-3. Environment
-4. organization
+### Run ansible for Redis
+ansible-playbook redis.yaml -i PrivateIP, --user="ubuntu" --private-key=devops.pem -vv -b
 
 
-
+### Run ansible for pritunl
+ansible-playbook pretunl.yaml -i PublicIP, --user="ubuntu" --private-key=/devops.pem -vvv -b
